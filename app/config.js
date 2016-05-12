@@ -1,11 +1,35 @@
 var path = require('path');
-var knex = require('knex')({
-  client: 'sqlite3',
-  connection: {
-    filename: path.join(__dirname, '../db/shortly.sqlite')
-  }
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/test');
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error: '));
+db.once('open', function() {
+  console.log("We are Connected!!!!!!!! DAMN!!!!!!");
 });
-var db = require('bookshelf')(knex);
+
+var urlSchema = mongoose.Schema({
+  url: String,
+  baseUrl: String,
+  code: String,
+  title: String,
+  visits: Number,
+  id: ObjectId // to be modified
+});
+
+var Url = mongoose.model('Url', urlSchema);
+
+exports.Url = Url;
+
+
+
+// var knex = require('knex')({
+//   client: 'sqlite3',
+//   connection: {
+//     filename: path.join(__dirname, '../db/shortly.sqlite')
+//   }
+// });
+// var db = require('bookshelf')(knex);
 
 db.knex.schema.hasTable('urls').then(function(exists) {
   if (!exists) {

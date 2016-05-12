@@ -1,4 +1,5 @@
-var db = require('../config');
+//var db = require('../config');
+var Url = require('../config').Url;
 var crypto = require('crypto');
 
 var Link = db.Model.extend({
@@ -17,3 +18,31 @@ var Link = db.Model.extend({
 });
 
 module.exports = Link;
+
+
+
+
+
+var urlMethod = {};
+
+urlMethod.createUrl = function(url,title,baseUrl, cb){
+  var shasum = crypto.createHash('sha1');
+      shasum.update(model.get('url'));
+
+  new Url({
+    url: url,
+    title: title,
+    baseUrl: basUrl,
+    code : shasum.digest('hex').slice(0, 5),
+    dafsdf
+  }).save( function(err){
+    if(err) cb(err);
+    cb();
+
+  })
+
+
+}
+
+
+exports.urlMethod = urlMethod;
